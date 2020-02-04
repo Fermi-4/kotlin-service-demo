@@ -102,6 +102,33 @@ class WebClientConfig(@Value(value = "\${alpha.vantage.api-key}") val apiKey: St
                 .build();
     }
 
+    /**
+     * Particle Rx web client that will be used to bridge between particle and kafka
+     * hosted in AWS
+     * Operates behind TI proxy
+     */
+    @Bean
+    @Profile("ti")
+    fun particleWebClientWithProxy() : WebClient {
+        var httpCient: HttpClient = HttpClient.create().tcpConfiguration { t -> t.proxy { proxy -> proxy.type(ProxyProvider.Proxy.HTTP).host("webproxy.ext.ti.com").port(80) } }
+        var connector: ReactorClientHttpConnector = ReactorClientHttpConnector(httpCient)
+        return WebClient
+                .builder()
+                .clientConnector(connector)
+                .baseUrl(BASE_URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MIME_TYPE)
+                .build();
+    }
+
+    @Bean
+    @Profile("dev")
+    fun particleWebClient() : WebClient {
+        return WebClient.builder()
+                .baseUrl(BASE_URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MIME_TYPE)
+                .build()
+    }
+
     @Bean
     @Profile("dev")
     fun alphaWebClient() : WebClient {
@@ -110,6 +137,8 @@ class WebClientConfig(@Value(value = "\${alpha.vantage.api-key}") val apiKey: St
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MIME_TYPE)
                 .build()
     }
+
+
 
 }
 

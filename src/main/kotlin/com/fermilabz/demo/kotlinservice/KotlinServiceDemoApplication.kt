@@ -83,7 +83,7 @@ fun prices(@PathVariable symbol: String): Flux<StockPrice> {
 @Configuration
 class WebClientConfig(@Value(value = "\${alpha.vantage.api-key}") val apiKey: String) {
 
-    var MIME_TYPE: String = "appplication/json"
+    var MIME_TYPE: String = "application/json"
     var BASE_URL: String = "https://www.alphavantage.co"
 
     /**

@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter
 @Component
 class ResponseDeserializer : JsonDeserializer<AlphaVantageResponse> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): AlphaVantageResponse {
-        var gson = Gson()
 
         var jsonObj = json?.asJsonObject
 
